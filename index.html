@@ -174,9 +174,9 @@
     </section>
 
     <nav class="tabs" aria-label="Main tabs" role="tablist">
-      <button class="tab" id="home-tab" type="button" role="tab" aria-selected="true" aria-controls="home-panel" data-panel="home-panel">Home</button>
-      <button class="tab" id="about-tab" type="button" role="tab" aria-selected="false" aria-controls="about-panel" data-panel="about-panel">About</button>
-      <button class="tab" id="services-tab" type="button" role="tab" aria-selected="false" aria-controls="services-panel" data-panel="services-panel">Services</button>
+      <button class="tab" id="home-tab" type="button" role="tab" aria-selected="true" aria-controls="home-panel" data-panel="home-panel" tabindex="0">Home</button>
+      <button class="tab" id="about-tab" type="button" role="tab" aria-selected="false" aria-controls="about-panel" data-panel="about-panel" tabindex="-1">About</button>
+      <button class="tab" id="services-tab" type="button" role="tab" aria-selected="false" aria-controls="services-panel" data-panel="services-panel" tabindex="-1">Services</button>
     </nav>
 
     <section class="panels">
@@ -206,18 +206,44 @@
     const tabs = document.querySelectorAll('.tab');
     const panels = document.querySelectorAll('.panel');
 
-    tabs.forEach((tab) => {
+    function activateTab(tab) {
+      const targetId = tab.dataset.panel;
+
+      tabs.forEach((item) => {
+        const isActive = item === tab;
+        item.setAttribute('aria-selected', String(isActive));
+        item.tabIndex = isActive ? 0 : -1;
+      });
+
+      panels.forEach((panel) => {
+        panel.classList.toggle('active', panel.id === targetId);
+        panel.hidden = panel.id !== targetId;
+      });
+    }
+
+    tabs.forEach((tab, index) => {
       tab.addEventListener('click', () => {
-        const targetId = tab.dataset.panel;
+        activateTab(tab);
+      });
 
-        tabs.forEach((item) => {
-          item.setAttribute('aria-selected', String(item === tab));
-        });
+      tab.addEventListener('keydown', (event) => {
+        const handlers = {
+          ArrowRight: () => tabs[(index + 1) % tabs.length],
+          ArrowLeft: () => tabs[(index - 1 + tabs.length) % tabs.length],
+          Home: () => tabs[0],
+          End: () => tabs[tabs.length - 1]
+        };
 
-        panels.forEach((panel) => {
-          panel.classList.toggle('active', panel.id === targetId);
-          panel.hidden = panel.id !== targetId;
-        });
+        const getNextTab = handlers[event.key];
+
+        if (!getNextTab) {
+          return;
+        }
+
+        event.preventDefault();
+        const nextTab = getNextTab();
+        activateTab(nextTab);
+        nextTab.focus();
       });
     });
   </script>
