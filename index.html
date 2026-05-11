@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sidamsoft</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --background: #f3f6fb;
+      --surface: #ffffff;
+      --primary: #1f4fa3;
+      --primary-soft: #e8effb;
+      --text: #18314f;
+      --muted: #5f7186;
+      --border: #d8e1ee;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #edf3fb 0%, var(--background) 100%);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    main {
+      width: min(100%, 920px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(24, 49, 79, 0.08);
+      overflow: hidden;
+    }
+
+    .hero {
+      padding: 48px 40px 24px;
+      background: linear-gradient(135deg, rgba(31, 79, 163, 0.1), rgba(31, 79, 163, 0.02));
+    }
+
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2rem, 4vw, 3rem);
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 640px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 12px;
+      padding: 0 40px;
+      margin-top: -18px;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      padding: 14px 22px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .tab:hover,
+    .tab:focus-visible {
+      border-color: var(--primary);
+      color: var(--primary);
+      outline: none;
+    }
+
+    .tab[aria-selected="true"] {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .panels {
+      padding: 32px 40px 40px;
+    }
+
+    .panel {
+      display: none;
+      animation: fade-in 0.2s ease-in-out;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .panel h2 {
+      margin-top: 0;
+      font-size: 1.7rem;
+    }
+
+    .panel p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    .service-list {
+      display: grid;
+      gap: 16px;
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .service-list li {
+      background: var(--primary-soft);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero,
+      .tabs,
+      .panels {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .hero {
+        padding-top: 32px;
+      }
+
+      .tabs {
+        margin-top: -10px;
+      }
+
+      .tab {
+        flex: 1 1 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <h1>Sidamsoft</h1>
+      <p>Simple, focused digital solutions that help businesses strengthen their online presence and serve customers with confidence.</p>
+    </section>
+
+    <nav class="tabs" aria-label="Main tabs" role="tablist">
+      <button class="tab" id="home-tab" type="button" role="tab" aria-selected="true" aria-controls="home-panel" data-panel="home-panel">Home</button>
+      <button class="tab" id="about-tab" type="button" role="tab" aria-selected="false" aria-controls="about-panel" data-panel="about-panel">About</button>
+      <button class="tab" id="services-tab" type="button" role="tab" aria-selected="false" aria-controls="services-panel" data-panel="services-panel">Services</button>
+    </nav>
+
+    <section class="panels">
+      <article id="home-panel" class="panel active" role="tabpanel" aria-labelledby="home-tab">
+        <h2>Home</h2>
+        <p>Welcome to Sidamsoft. We create clean, reliable web experiences that make it easy for customers to discover your business and connect with your team.</p>
+      </article>
+
+      <article id="about-panel" class="panel" role="tabpanel" aria-labelledby="about-tab" hidden>
+        <h2>About</h2>
+        <p>Sidamsoft is dedicated to building practical websites with modern design, clear messaging, and a user-first approach so growing businesses can stand out online.</p>
+      </article>
+
+      <article id="services-panel" class="panel" role="tabpanel" aria-labelledby="services-tab" hidden>
+        <h2>Services</h2>
+        <p>We offer a simple set of services tailored to support a polished online presence and a better customer experience.</p>
+        <ul class="service-list">
+          <li>Website Design</li>
+          <li>Single-Page Development</li>
+          <li>Content Updates</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab');
+    const panels = document.querySelectorAll('.panel');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const targetId = tab.dataset.panel;
+
+        tabs.forEach((item) => {
+          item.setAttribute('aria-selected', String(item === tab));
+        });
+
+        panels.forEach((panel) => {
+          panel.classList.toggle('active', panel.id === targetId);
+          panel.hidden = panel.id !== targetId;
+        });
+      });
+    });
+  </script>
+</body>
+</html>
